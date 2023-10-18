@@ -20,64 +20,64 @@ public class Square {
 		this.bombMap = bombMap;
 		this.isHidden = isHidden;
 		this.hasBomb = hasBomb;
-		this.content = setContent();
+		this.content = getContent();
 	}
 	
-	private String setContent() {
+	public void revealSquare() {
+	  this.isHidden = false;
+	  String newSquareContent = this.getContent();
+	  this.content = newSquareContent;
+	}
+	
+	private String getContent() {
 		if(this.isHidden) {
 		  return " ";
 		}
-		
+
 		if(this.hasBomb) {
 			return "B";
 		}
 		
-		return Integer.toString(getSurroundingBombCount());
+		return Integer.toString(getAdjacentBombCount());
 	}
 	
-	private ArrayList<int[]> getSurroundingPositions() {
-		ArrayList<int[]> surroundingPositions = new ArrayList<int[]>();
+	private int getAdjacentBombCount() {
+		// TODO: Split this method into smaller methods
+
+		int boardWidth = this.bombMap.get(0).size();
+		int boardHeight = this.bombMap.size();
+				
+		ArrayList<int[]> adjacentPositions = getAdjacentPositions();
 		
-		// rewrite to use a loop of some kind
-		
-		int[] topLeft = { this.xPosition - 1, this.yPosition - 1 };
-		surroundingPositions.add(topLeft);
-		
-		int[] top = { this.xPosition, this.yPosition - 1 };
-		surroundingPositions.add(top);
-		
-		int[] topRight = { this.xPosition + 1, this.yPosition - 1 };
-		surroundingPositions.add(topRight);
-		
-		int[] left = { this.xPosition - 1, this.yPosition };
-		surroundingPositions.add(left);
-		
-		int[] right = { this.xPosition + 1, this.yPosition };
-		surroundingPositions.add(right);
-		
-		int[] bottomLeft = { this.xPosition - 1, this.yPosition + 1 };
-		surroundingPositions.add(bottomLeft);
-		
-		int[] bottom = { this.xPosition, this.yPosition + 1 };
-		surroundingPositions.add(bottom);
-		
-		int[] bottomRight = { this.xPosition + 1, this.yPosition + 1 };
-		surroundingPositions.add(bottomRight);
-		
-		return surroundingPositions;
-	}
-	
-	private int getSurroundingBombCount() {
-		ArrayList<int[]> surroundingPositions = getSurroundingPositions();
-		
-		// Pass in board width and height
-		
-		ArrayList<int[]> bombPositions = surroundingPositions.stream().filter((position) -> {
-			if (position[0] < 0 || position[0] >= 10 || position[1] < 0 || position[1] >= 10) {
+		ArrayList<int[]> bombPositions = adjacentPositions.stream().filter((position) -> {
+			int xCoord = position[0];
+			int yCoord = position[1];
+			
+			boolean positionIsInvalid = SharedMethods.isValidSquare(xCoord, yCoord, boardWidth, boardHeight);
+			
+			if (positionIsInvalid) {
 			  return false;
 			};
+			
 			return this.bombMap.get(position[1]).get(position[0]);
 		}).collect(Collectors.toCollection(ArrayList::new));
+		
 		return bombPositions.size();
+	}
+	
+	private ArrayList<int[]> getAdjacentPositions() {
+		ArrayList<int[]> adjacentPositions = new ArrayList<int[]>();
+
+		for(int i = -1; i <= 1; i++) {
+			for(int j = -1; j <= 1; j++) {
+				// Note: This logic will add the current square as an "adjacent square"
+				// It will be filtered out, since it never contains a bomb, but this does reduce efficiency
+				
+				int[] position = { this.xPosition + j, this.yPosition + i };
+				adjacentPositions.add(position);
+			}
+		}
+		
+		return adjacentPositions;
 	}
 }
