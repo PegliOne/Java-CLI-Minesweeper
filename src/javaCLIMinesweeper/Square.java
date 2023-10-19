@@ -23,49 +23,13 @@ public class Square {
 		this.content = getContent();
 	}
 	
-	public void revealSquare() {
+	protected void revealSquare() {
 	  this.isHidden = false;
 	  String newSquareContent = this.getContent();
 	  this.content = newSquareContent;
 	}
 	
-	private String getContent() {
-		if(this.isHidden) {
-		  return " ";
-		}
-
-		if(this.hasBomb) {
-			return "B";
-		}
-		
-		return Integer.toString(getAdjacentBombCount());
-	}
-	
-	private int getAdjacentBombCount() {
-		// TODO: Split this method into smaller methods
-
-		int boardWidth = this.bombMap.get(0).size();
-		int boardHeight = this.bombMap.size();
-				
-		ArrayList<int[]> adjacentPositions = getAdjacentPositions();
-		
-		ArrayList<int[]> bombPositions = adjacentPositions.stream().filter((position) -> {
-			int xCoord = position[0];
-			int yCoord = position[1];
-			
-			boolean positionIsInvalid = SharedMethods.isValidSquare(xCoord, yCoord, boardWidth, boardHeight);
-			
-			if (positionIsInvalid) {
-			  return false;
-			};
-			
-			return this.bombMap.get(position[1]).get(position[0]);
-		}).collect(Collectors.toCollection(ArrayList::new));
-		
-		return bombPositions.size();
-	}
-	
-	private ArrayList<int[]> getAdjacentPositions() {
+	protected ArrayList<int[]> getAdjacentPositions() {
 		ArrayList<int[]> adjacentPositions = new ArrayList<int[]>();
 
 		for(int i = -1; i <= 1; i++) {
@@ -79,5 +43,45 @@ public class Square {
 		}
 		
 		return adjacentPositions;
+	}
+	
+	private String getContent() {
+		String content = "";
+		if (this.xPosition == 0) {
+			content += " ";
+		}
+		if(this.isHidden) {
+		    return content + " ";
+		}
+
+		if(this.hasBomb) {
+			return content + "B";
+		}
+		
+		return content + Integer.toString(getAdjacentBombCount());
+	}
+	
+	private int getAdjacentBombCount() {
+		// TODO: Split this method into smaller methods
+
+		int boardWidth = this.bombMap.get(0).size();
+		int boardHeight = this.bombMap.size();
+				
+		ArrayList<int[]> adjacentPositions = getAdjacentPositions();
+		
+		ArrayList<int[]> bombPositions = adjacentPositions.stream().filter((position) -> {
+			int xPos = position[0];
+			int yPos = position[1];
+			
+			boolean positionIsInvalid = SharedMethods.isValidSquare(xPos, yPos, boardWidth, boardHeight);
+			
+			if (positionIsInvalid) {
+			  return false;
+			};
+			
+			return this.bombMap.get(position[1]).get(position[0]);
+		}).collect(Collectors.toCollection(ArrayList::new));
+		
+		return bombPositions.size();
 	}
 }

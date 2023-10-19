@@ -3,6 +3,7 @@ package javaCLIMinesweeper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
 	
@@ -18,8 +19,10 @@ public class Main {
 		
 		// Set Up Board
 		
-		ArrayList<ArrayList<Boolean>> bombMap = BoardMethods.createBombMap(boardWidth, boardHeight);	
-		ArrayList<ArrayList<Square>> board = BoardMethods.createBoardFromBombMap(bombMap);
+		ArrayList<ArrayList<Boolean>> bombMap = SetUpMethods.createBombMap(boardWidth, boardHeight);	
+		ArrayList<ArrayList<Square>> board = SetUpMethods.createBoardFromBombMap(bombMap, boardWidth, boardHeight);
+		
+		int safeHiddenSquaresCount = SetUpMethods.getHiddenSafeSquaresCount(board, boardHeight);
 		
 		// Greet User
 		
@@ -31,7 +34,7 @@ public class Main {
 		
 			// Print Board
 			
-			BoardMethods.printBoard(board);
+			SetUpMethods.printBoard(board, boardHeight);
 			
 			// Get User Input and Convert to Integers
 			
@@ -65,20 +68,47 @@ public class Main {
 
 			Square selectedSquare = board.get(yCoord).get(xCoord);
 			
-			// Reveal Square and Check for Bombs
+			// Reveal Squares
 
 			selectedSquare.revealSquare();
 			
+			if (Integer.parseInt(selectedSquare.content.trim()) == 0) {
+				ArrayList<int[]> adjacentPositions = selectedSquare.getAdjacentPositions();
+				for (int[] position : adjacentPositions) {
+					int xPos = position[0];
+					int yPos = position[1];
+					
+					boolean positionIsInvalid = SharedMethods.isValidSquare(xPos, yPos, boardWidth, boardHeight);
+					
+//					if (positionIsInvalid) {
+//					  return false;
+//					};
+					
+					if (!positionIsInvalid) {
+						Square adjacentSquare = board.get(position[1]).get(position[0]);
+						adjacentSquare.revealSquare();
+					}
+				}
+			}
+			
+			// Check for bombs
 			
 			if (selectedSquare.hasBomb) {
 				PrintTextMethods.printGameOver();
-				BoardMethods.printBoard(board);
+				SetUpMethods.printBoard(board, boardHeight);
 				
 				scanner.close();
 				gameRunning = false;
 			} else {
 				System.out.println("No bomb there");	
 				System.out.println();
+				safeHiddenSquaresCount--;
+				
+				if (safeHiddenSquaresCount < 1) {
+					System.out.println("All safe squares revealed. You win!");
+					System.out.println();
+					gameRunning = false;
+				}
 			}
 		}		
 	}

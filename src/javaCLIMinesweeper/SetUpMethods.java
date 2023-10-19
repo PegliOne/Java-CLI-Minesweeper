@@ -2,8 +2,9 @@ package javaCLIMinesweeper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
-public class BoardMethods {
+public class SetUpMethods {
 	public static ArrayList<ArrayList<Boolean>> createBombMap(int width, int height) {
 		ArrayList<ArrayList<Boolean>> bombMap = new ArrayList<ArrayList<Boolean>>();
 		
@@ -18,10 +19,7 @@ public class BoardMethods {
 		return bombMap;
 	}
 
-	public static ArrayList<ArrayList<Square>> createBoardFromBombMap(ArrayList<ArrayList<Boolean>> bombMap) {
-		int width = bombMap.get(0).size();
-		int height = bombMap.size();
-		
+	public static ArrayList<ArrayList<Square>> createBoardFromBombMap(ArrayList<ArrayList<Boolean>> bombMap, int width, int height) {
 		ArrayList<ArrayList<Square>> board = new ArrayList<ArrayList<Square>>();
 		
 		for(int i = 0; i < height; i++) {
@@ -36,9 +34,19 @@ public class BoardMethods {
 		return board;
 	}
 	
-	public static void printBoard(ArrayList<ArrayList<Square>> board) {
-		int height = board.size();
+	public static int getHiddenSafeSquaresCount(ArrayList<ArrayList<Square>> board, int height) {
+		int safeHiddenSquaresCount = 0;
 		
+		for(int i = 0; i < height; i++) {
+			ArrayList<Square> boardRow = board.get(i);
+			ArrayList<Square> safeHiddenSquares = boardRow.stream().filter(square -> !square.hasBomb && square.isHidden).collect(Collectors.toCollection(ArrayList::new));
+			safeHiddenSquaresCount += safeHiddenSquares.size();
+		}
+		
+		return safeHiddenSquaresCount;
+	}
+	
+	public static void printBoard(ArrayList<ArrayList<Square>> board, int height) {
 		for(int i = 0; i < height; i++) {
 			ArrayList<Square> boardRow = board.get(i);
 			String[] boardRowContent = boardRow.stream().map(square -> square.content).toArray((size) -> new String[height]);
