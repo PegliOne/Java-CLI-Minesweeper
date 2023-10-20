@@ -1,17 +1,33 @@
 package javaCLIMinesweeper;
 
+import java.util.ArrayList;
+
 public class SharedMethods {
-	public static void printAppIntro() {
-		System.out.println("Welcome to the Java CLI Minesweeper App");
-		System.out.println();
-		System.out.println("Select the coordinates of the square you wish to reveal");
-		System.out.println("Enter the x coordinate followed by the y coordinate");
-		System.out.println("Please separate the values by a space (e.g. 5 5)");
-		System.out.println("The origin (i.e. the square with coordinates 0 0) is the top left square");
-		System.out.println();
-	}
-	
 	public static boolean isValidSquare(int xCoord, int yCoord, int width, int height) {
 		return xCoord < 0 || xCoord >= width || yCoord < 0 || yCoord >= height;
 	}
-}
+	
+	public static void revealAdjacentSquares(Square selectedSquare, ArrayList<ArrayList<Square>> board, int boardWidth, int boardHeight) {
+		ArrayList<int[]> adjacentPositions = selectedSquare.getAdjacentPositions();
+		for (int[] position : adjacentPositions) {
+			int xPos = position[0];
+			int yPos = position[1];
+			
+			boolean positionIsInvalid = SharedMethods.isValidSquare(xPos, yPos, boardWidth, boardHeight);
+			
+			if (positionIsInvalid) {
+			  continue;
+			};
+			
+			Square adjacentSquare = board.get(position[1]).get(position[0]);
+			
+			if (adjacentSquare.isHidden) {
+				adjacentSquare.revealSquare();
+					
+				if (Integer.parseInt(adjacentSquare.content.trim()) == 0) {
+					SharedMethods.revealAdjacentSquares(adjacentSquare, board, boardWidth, boardHeight);
+				}
+			}
+		}
+	}
+}	

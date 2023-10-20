@@ -1,28 +1,74 @@
 package javaCLIMinesweeper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Main {
 	
 	public static void main(String[] args) {
 		
+		System.out.println("Welcome to the Java CLI Minesweeper App");
+		System.out.println();
+		
 		// Set Up Variables and Scanner
 		
-		final int boardWidth = 10;
-		final int boardHeight = 10;
+		int boardWidth;
+		int boardHeight;
+		int bombCount;
+		
 		boolean gameRunning = true;
 		
 		Scanner scanner = new Scanner(System.in);
 		
+		// TODO: Take in input from a configuration.json file instead
+		
+		// Refactor this to use functions
+		// Loop through each until value is set
+		
+		System.out.print("Enter board width: ");
+		
+		try {
+			boardWidth = Integer.parseInt(scanner.nextLine().replaceAll("[^0-9]", ""));
+		} catch (NumberFormatException nfe) {
+			System.out.println("Error: The width must be a number");
+			scanner.close();
+			return;
+		}
+		
+		System.out.println();
+		
+		System.out.print("Enter board height: ");
+		
+		try {
+			boardHeight = Integer.parseInt(scanner.nextLine().replaceAll("[^0-9]", ""));
+		} catch (NumberFormatException nfe) {
+			System.out.println("Error: The height must be a number");
+			scanner.close();
+			return;
+		}
+		
+		System.out.println();
+		
+		System.out.print("Enter (approximate) number of bombs: ");
+		
+		try {
+			bombCount = Integer.parseInt(scanner.nextLine().replaceAll("[^0-9]", ""));
+		} catch (NumberFormatException nfe) {
+			System.out.println("Error: The (approximate) number of bombs must be a number.");
+			scanner.close();
+			return;
+		}
+		
+		System.out.println();
+		
+		// Turn ints into floats for this calculation
+		
+		double bombProbability = (float) bombCount / (boardWidth * boardHeight);
+		
 		// Set Up Board
 		
-		ArrayList<ArrayList<Boolean>> bombMap = SetUpMethods.createBombMap(boardWidth, boardHeight);	
+		ArrayList<ArrayList<Boolean>> bombMap = SetUpMethods.createBombMap(boardWidth, boardHeight, bombProbability);	
 		ArrayList<ArrayList<Square>> board = SetUpMethods.createBoardFromBombMap(bombMap, boardWidth, boardHeight);
-		
-		int safeHiddenSquaresCount = SetUpMethods.getHiddenSafeSquaresCount(board, boardHeight);
 		
 		// Greet User
 		
@@ -68,30 +114,10 @@ public class Main {
 
 			Square selectedSquare = board.get(yCoord).get(xCoord);
 			
-			// Reveal Squares
+			// Reveal Squares and Check for Bombs
 
 			selectedSquare.revealSquare();
 			
-			if (Integer.parseInt(selectedSquare.content.trim()) == 0) {
-				ArrayList<int[]> adjacentPositions = selectedSquare.getAdjacentPositions();
-				for (int[] position : adjacentPositions) {
-					int xPos = position[0];
-					int yPos = position[1];
-					
-					boolean positionIsInvalid = SharedMethods.isValidSquare(xPos, yPos, boardWidth, boardHeight);
-					
-//					if (positionIsInvalid) {
-//					  return false;
-//					};
-					
-					if (!positionIsInvalid) {
-						Square adjacentSquare = board.get(position[1]).get(position[0]);
-						adjacentSquare.revealSquare();
-					}
-				}
-			}
-			
-			// Check for bombs
 			
 			if (selectedSquare.hasBomb) {
 				PrintTextMethods.printGameOver();
@@ -102,11 +128,19 @@ public class Main {
 			} else {
 				System.out.println("No bomb there");	
 				System.out.println();
-				safeHiddenSquaresCount--;
+				
+				// Square reveal cascade
+				
+				if (Integer.parseInt(selectedSquare.content.trim()) == 0) {
+					SharedMethods.revealAdjacentSquares(selectedSquare, board, boardWidth, boardHeight);
+				}
+				
+				int safeHiddenSquaresCount = SetUpMethods.getHiddenSafeSquaresCount(board, boardHeight);
 				
 				if (safeHiddenSquaresCount < 1) {
 					System.out.println("All safe squares revealed. You win!");
 					System.out.println();
+					SetUpMethods.printBoard(board, boardHeight);
 					gameRunning = false;
 				}
 			}

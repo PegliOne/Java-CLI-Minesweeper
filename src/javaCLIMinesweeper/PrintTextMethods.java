@@ -2,8 +2,6 @@ package javaCLIMinesweeper;
 
 public class PrintTextMethods {
 	public static void printAppIntro() {
-		System.out.println("Welcome to the Java CLI Minesweeper App");
-		System.out.println();
 		System.out.println("Select the coordinates of the square you wish to reveal");
 		System.out.println("Enter the x coordinate followed by the y coordinate");
 		System.out.println("Please separate the values by a space (e.g. 5 5)");

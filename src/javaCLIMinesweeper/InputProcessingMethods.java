@@ -22,13 +22,13 @@ public class InputProcessingMethods {
 		try {
 			coordNums.add(Integer.parseInt(coordStr[0].replaceAll("[^0-9]", "")));
 		} catch (NumberFormatException nfe) {
-			System.out.println("Error: The x coordinate is not a number");
+			System.out.println("Error: The x coordinate must be a number");
 		}
 		
 		try {
 			coordNums.add(Integer.parseInt(coordStr[1].replaceAll("[^0-9]", "")));
 		} catch (NumberFormatException nfe) {
-			System.out.println("Error: The y coordinate is not a number");
+			System.out.println("Error: The y coordiante must be a number");
 		}
 		
 		return coordNums;  

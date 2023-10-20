@@ -5,13 +5,13 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class SetUpMethods {
-	public static ArrayList<ArrayList<Boolean>> createBombMap(int width, int height) {
+	public static ArrayList<ArrayList<Boolean>> createBombMap(int width, int height, double bombProbability) {
 		ArrayList<ArrayList<Boolean>> bombMap = new ArrayList<ArrayList<Boolean>>();
 		
 		for(int i = 0; i < height; i++) {
 			ArrayList<Boolean> bombMapRow = new ArrayList<Boolean>();
 			for(int j = 0; j < width; j++) {
-			  bombMapRow.add(Math.random() < 0.1);
+			  bombMapRow.add(Math.random() < bombProbability);
 			}
 			bombMap.add(bombMapRow);
 		}
