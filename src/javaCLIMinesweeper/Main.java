@@ -118,7 +118,6 @@ public class Main {
 
 			selectedSquare.revealSquare();
 			
-			
 			if (selectedSquare.hasBomb) {
 				PrintTextMethods.printGameOver();
 				SetUpMethods.printBoard(board, boardHeight);

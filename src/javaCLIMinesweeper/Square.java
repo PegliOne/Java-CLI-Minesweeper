@@ -45,20 +45,35 @@ public class Square {
 		return adjacentPositions;
 	}
 	
-	private String getContent() {
-		String content = "";
-		if (this.xPosition == 0) {
-			content += " ";
-		}
-		if(this.isHidden) {
-		    return content + " ";
-		}
-
-		if(this.hasBomb) {
-			return content + "B";
+	private String getContent() {	
+		// TODO: Break this method up
+		
+		String defaultContent = "  ";
+		
+		// Squares on the far left get an extra space to match the space that is automatically added to the other squares
+		if(this.xPosition == 0) {
+			defaultContent += " ";
 		}
 		
-		return content + Integer.toString(getAdjacentBombCount());
+		StringBuilder content = new StringBuilder(defaultContent);
+		char value;
+			
+		// Default string of spaces is return if square is hidden
+		if(this.isHidden) {
+			return content.toString();
+		} 
+		
+		// The value that replaces a space in the string is determined
+		if(this.hasBomb) {
+		    value = 'B';
+		} else {
+			value = Integer.toString(getAdjacentBombCount()).charAt(0);
+		}
+		
+		// The value replaces the second last space
+		content.setCharAt(content.length() - 2, value);
+
+		return content.toString();
 	}
 	
 	private int getAdjacentBombCount() {
