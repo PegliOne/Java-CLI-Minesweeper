@@ -46,7 +46,7 @@ public class Square {
 	}
 	
 	private String getContent() {	
-		// TODO: Break this method up
+		// TODO: Refactor this to use String.format
 		
 		String defaultContent = "  ";
 		

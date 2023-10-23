@@ -7,72 +7,33 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
+		// Greet User and Set up Scanner
+		
 		System.out.println("Welcome to the Java CLI Minesweeper App");
 		System.out.println();
 		
-		// Set Up Variables and Scanner
-		
-		int boardWidth;
-		int boardHeight;
-		int bombCount;
-		
-		boolean gameRunning = true;
-		
 		Scanner scanner = new Scanner(System.in);
+		
+		// Get Board Dimensions from User Input
 		
 		// TODO: Take in input from a configuration.json file instead
 		
-		// Refactor this to use functions
-		// Loop through each until value is set
+		final int boardWidth = InputProcessingMethods.getBoardDimension("width", scanner);
+		final int boardHeight = InputProcessingMethods.getBoardDimension("height", scanner);
+		final int desiredBombCount = InputProcessingMethods.getBombCount(boardWidth, boardHeight, scanner);
 		
-		System.out.print("Enter board width: ");
-		
-		try {
-			boardWidth = Integer.parseInt(scanner.nextLine().replaceAll("[^0-9]", ""));
-		} catch (NumberFormatException nfe) {
-			System.out.println("Error: The width must be a number");
-			scanner.close();
-			return;
-		}
-		
-		System.out.println();
-		
-		System.out.print("Enter board height: ");
-		
-		try {
-			boardHeight = Integer.parseInt(scanner.nextLine().replaceAll("[^0-9]", ""));
-		} catch (NumberFormatException nfe) {
-			System.out.println("Error: The height must be a number");
-			scanner.close();
-			return;
-		}
-		
-		System.out.println();
-		
-		System.out.print("Enter (approximate) number of bombs: ");
-		
-		try {
-			bombCount = Integer.parseInt(scanner.nextLine().replaceAll("[^0-9]", ""));
-		} catch (NumberFormatException nfe) {
-			System.out.println("Error: The (approximate) number of bombs must be a number.");
-			scanner.close();
-			return;
-		}
-		
-		System.out.println();
-		
-		// Turn ints into floats for this calculation
-		
-		double bombProbability = (float) bombCount / (boardWidth * boardHeight);
+		double bombProbability = (float) desiredBombCount / (boardWidth * boardHeight);
 		
 		// Set Up Board
 		
 		ArrayList<ArrayList<Boolean>> bombMap = SetUpMethods.createBombMap(boardWidth, boardHeight, bombProbability);	
 		ArrayList<ArrayList<Square>> board = SetUpMethods.createBoardFromBombMap(bombMap, boardWidth, boardHeight);
 		
-		// Greet User
+		// Start Game
 		
 		PrintTextMethods.printAppIntro();
+		
+		boolean gameRunning = true;
 		
 		// Game Loop
 		
@@ -80,7 +41,7 @@ public class Main {
 		
 			// Print Board
 			
-			SetUpMethods.printBoard(board, boardHeight);
+			SetUpMethods.printBoard(board, boardWidth, boardHeight);
 			
 			// Get User Input and Convert to Integers
 			
@@ -120,7 +81,7 @@ public class Main {
 			
 			if (selectedSquare.hasBomb) {
 				PrintTextMethods.printGameOver();
-				SetUpMethods.printBoard(board, boardHeight);
+				SetUpMethods.printBoard(board, boardWidth, boardHeight);
 				
 				scanner.close();
 				gameRunning = false;
@@ -139,7 +100,7 @@ public class Main {
 				if (safeHiddenSquaresCount < 1) {
 					System.out.println("All safe squares revealed. You win!");
 					System.out.println();
-					SetUpMethods.printBoard(board, boardHeight);
+					SetUpMethods.printBoard(board, boardWidth, boardHeight);
 					gameRunning = false;
 				}
 			}
