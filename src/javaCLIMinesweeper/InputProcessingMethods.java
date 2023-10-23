@@ -13,26 +13,29 @@ public class InputProcessingMethods {
 		while (dimension < 1) {
 			System.out.print(String.format("Enter board %s (from 1 - 28): ", name));
 			
-			String input = scanner.nextLine();
+			String input = scanner.nextLine().replaceAll(" ", "");
 			
-			if (input.matches(".*-[0-9].*")) {
+			if (input.matches("-[0-9]*")) {
 				System.out.println();
-				System.out.println(String.format("Error: The % cannot be negative", name));
+				System.out.println(String.format("Error: The %s cannot be negative", name));
 				System.out.println();
 				continue;
 			}
 			
 			try {
-				dimension = Integer.parseInt(input.replaceAll("[^0-9]", ""));
+				dimension = Integer.parseInt(input);
 			} catch (NumberFormatException nfe) {
-				System.out.println(String.format("Error: The % must be a number", name));
+				System.out.println();
+				System.out.println(String.format("Error: The %s must be a number", name));
+				System.out.println();
+				continue;
 			}
 						
 			// Check for valid numerical input
 			
 			if (dimension < 1 || dimension > 28) {
 				System.out.println();
-				System.out.println(String.format("Error: The % must be be 1 - 28", name));
+				System.out.println(String.format("Error: The %s must be be 1 - 28", name));
 				System.out.println();
 			}
 		}
@@ -48,7 +51,7 @@ public class InputProcessingMethods {
 		while (count < 1 || count > maxCount) {
 			System.out.print("Enter (approximate) number of bombs: ");
 
-			String input = scanner.nextLine();
+			String input = scanner.nextLine().trim();
 			
 			if (input.matches(".*-[0-9].*")) {
 				System.out.println();
@@ -58,9 +61,12 @@ public class InputProcessingMethods {
 			}
 			
 			try {
-				count = Integer.parseInt(input.replaceAll("[^0-9]", ""));
+				count = Integer.parseInt(input);
 			} catch (NumberFormatException nfe) {
+				System.out.println();
 				System.out.println(String.format("Error: The bomb count must be a number"));
+				System.out.println();
+				continue;
 			}
 						
 			// Check for valid numerical input
@@ -99,13 +105,13 @@ public class InputProcessingMethods {
 		// TODO: Use a loop for this
 		
 		try {
-			coordNums.add(Integer.parseInt(coordStr[0].replaceAll("[^0-9]", "")));
+			coordNums.add(Integer.parseInt(coordStr[0].trim()));
 		} catch (NumberFormatException nfe) {
 			System.out.println("Error: The x coordinate must be a number");
 		}
 		
 		try {
-			coordNums.add(Integer.parseInt(coordStr[1].replaceAll("[^0-9]", "")));
+			coordNums.add(Integer.parseInt(coordStr[1].trim()));
 		} catch (NumberFormatException nfe) {
 			System.out.println("Error: The y coordiante must be a number");
 		}
