@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class SetUpMethods {
+public class BoardMethods {
 	public static ArrayList<ArrayList<Boolean>> createBombMap(int width, int height, double bombProbability) {
 		ArrayList<ArrayList<Boolean>> bombMap = new ArrayList<ArrayList<Boolean>>();
 		
@@ -32,6 +32,17 @@ public class SetUpMethods {
 		}
 		
 		return board;
+	}
+	
+	public static void revealAllBombs(ArrayList<ArrayList<Square>> board, int width, int height) {	
+		for(int i = 0; i < height; i++) {
+			for(int j = 0; j < width; j++) {
+				Square square = board.get(i).get(j);
+				if(square.hasBomb) {
+					square.revealSquare();
+				}
+			}
+		}
 	}
 	
 	public static int getHiddenSafeSquaresCount(ArrayList<ArrayList<Square>> board, int height) {

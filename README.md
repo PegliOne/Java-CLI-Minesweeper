@@ -8,6 +8,7 @@ A minesweeper game made in Java that can be run in the command line.
 - Evenly sized squares (including on the left and right edges)
 - Error handling for invalid inputs (including non-numerical inputs and inputs that are too low or two high)
 - Cascades of square reveals for squares with zero bombs surrounding them
+- Reveals all the bomb squares after a game over
 
 ## How To Use
 
@@ -27,13 +28,13 @@ To select a coordinate enter an x value, followed by a space and then a y value 
 
 If a selected square doesn't have a bomb, the app with print "No bomb there". The board will then reprint with the selected square's value showing. The value corresponds to the number of bombs surrounding the square. If it is zero, the surrounding squares will be revealed and a cascasde will be triggered (i.e. other squares revealed to have a value of zero will have their surrounding squares revealed and so on until the cascade ends).
 
-If the selected square does have a bomb, the game will end and the app will print "Boom! Game Over" followed by a reprint of the board with the bomb square revealed. Currently the app does NOT show all the remaining bombs.
+If the selected square does have a bomb, the game will end and the app will print "Boom! Game Over" followed by a reprint of the board with all the bomb squares revealed.
 
-When all the safe squares have been revealed, the game will end and the app will print "All safe squares revealed. You win!" followed by a reprint of the board with only the bomb squares hidden.
+When all the safe squares have been revealed, the game will end and the app will print "All safe squares revealed. You win!" followed by a reprint of the board with all the bomb squares revealed.
 
 ## Upcoming Improvements
 
-- Making the board reveal all the bombs at the end of the game
+- Preventing the board from reprinting after an invalid square selection
 - Enabling the width, height and bomb count to be set using a configuration.json file
 
 ## Technologies Used

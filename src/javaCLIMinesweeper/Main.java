@@ -26,8 +26,8 @@ public class Main {
 		
 		// Set Up Board
 		
-		ArrayList<ArrayList<Boolean>> bombMap = SetUpMethods.createBombMap(boardWidth, boardHeight, bombProbability);	
-		ArrayList<ArrayList<Square>> board = SetUpMethods.createBoardFromBombMap(bombMap, boardWidth, boardHeight);
+		ArrayList<ArrayList<Boolean>> bombMap = BoardMethods.createBombMap(boardWidth, boardHeight, bombProbability);	
+		ArrayList<ArrayList<Square>> board = BoardMethods.createBoardFromBombMap(bombMap, boardWidth, boardHeight);
 		
 		// Start Game
 		
@@ -41,7 +41,7 @@ public class Main {
 		
 			// Print Board
 			
-			SetUpMethods.printBoard(board, boardWidth, boardHeight);
+			BoardMethods.printBoard(board, boardWidth, boardHeight);
 			
 			// Get User Input and Convert to Integers
 			
@@ -81,7 +81,8 @@ public class Main {
 			
 			if (selectedSquare.hasBomb) {
 				PrintTextMethods.printGameOver();
-				SetUpMethods.printBoard(board, boardWidth, boardHeight);
+				BoardMethods.revealAllBombs(board, boardWidth, boardHeight);
+				BoardMethods.printBoard(board, boardWidth, boardHeight);
 				
 				scanner.close();
 				gameRunning = false;
@@ -95,12 +96,13 @@ public class Main {
 					SharedMethods.revealAdjacentSquares(selectedSquare, board, boardWidth, boardHeight);
 				}
 				
-				int safeHiddenSquaresCount = SetUpMethods.getHiddenSafeSquaresCount(board, boardHeight);
+				int safeHiddenSquaresCount = BoardMethods.getHiddenSafeSquaresCount(board, boardHeight);
 				
 				if (safeHiddenSquaresCount < 1) {
 					System.out.println("All safe squares revealed. You win!");
 					System.out.println();
-					SetUpMethods.printBoard(board, boardWidth, boardHeight);
+					BoardMethods.revealAllBombs(board, boardWidth, boardHeight);
+					BoardMethods.printBoard(board, boardWidth, boardHeight);
 					gameRunning = false;
 				}
 			}
