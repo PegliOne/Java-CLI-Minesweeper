@@ -16,7 +16,7 @@ public class Main {
 		
 		// Get Board Dimensions from User Input
 		
-		// TODO: Take in input from a configuration.json file instead
+		// TODO: Take in input from a configuration.json file using the the JSON simple library instead
 		
 		final int boardWidth = InputProcessingMethods.getBoardDimension("width", scanner);
 		final int boardHeight = InputProcessingMethods.getBoardDimension("height", scanner);
