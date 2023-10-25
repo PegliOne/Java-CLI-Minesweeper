@@ -10,13 +10,17 @@ public class Square {
 	String content;
 	int xPosition;
 	int yPosition;
+	int boardWidth;
+	int boardHeight;
 	ArrayList<ArrayList<Boolean>> bombMap;
 	boolean isHidden;
 	boolean hasBomb;
 	
-	public Square(int xPosition, int yPosition, ArrayList<ArrayList<Boolean>> bombMap, boolean isHidden, boolean hasBomb) {
+	public Square(int xPosition, int yPosition, int boardWidth, int boardHeight, ArrayList<ArrayList<Boolean>> bombMap, boolean isHidden, boolean hasBomb) {
 		this.xPosition = xPosition;
 		this.yPosition = yPosition;
+		this.boardWidth = boardWidth;
+		this.boardHeight = boardHeight;
 		this.bombMap = bombMap;
 		this.isHidden = isHidden;
 		this.hasBomb = hasBomb;
@@ -45,42 +49,28 @@ public class Square {
 		return adjacentPositions;
 	}
 	
-	private String getContent() {	
-		// TODO: Refactor this to use String.format
-		
-		String defaultContent = "  ";
-		
-		// Squares on the far left get an extra space to match the space that is automatically added to the other squares
-		if(this.xPosition == 0) {
-			defaultContent += " ";
-		}
-		
-		StringBuilder content = new StringBuilder(defaultContent);
+	private String getContent() {		
 		char value;
-			
-		// Default string of spaces is return if square is hidden
-		if(this.isHidden) {
-			return content.toString();
-		} 
 		
 		// The value that replaces a space in the string is determined
-		if(this.hasBomb) {
+		if (this.isHidden) {
+			value = ' ';
+		} else if (this.hasBomb) {
 		    value = 'B';
 		} else {
 			value = Integer.toString(getAdjacentBombCount()).charAt(0);
 		}
-		
-		// The value replaces the second last space
-		content.setCharAt(content.length() - 2, value);
-
-		return content.toString();
+				
+		// Squares on the far left get an extra space to match the space that is automatically added to the other squares
+		if(this.xPosition == 0) {
+			return String.format(" %c ", value);
+		} else {
+			return String.format("%c ", value);
+		}
 	}
 	
 	private int getAdjacentBombCount() {
 		// TODO: Split this method into smaller methods
-
-		int boardWidth = this.bombMap.get(0).size();
-		int boardHeight = this.bombMap.size();
 				
 		ArrayList<int[]> adjacentPositions = getAdjacentPositions();
 		
@@ -88,7 +78,7 @@ public class Square {
 			int xPos = position[0];
 			int yPos = position[1];
 			
-			boolean positionIsInvalid = SharedMethods.isValidSquare(xPos, yPos, boardWidth, boardHeight);
+			boolean positionIsInvalid = SharedMethods.isValidSquare(xPos, yPos, this.boardWidth, boardHeight);
 			
 			if (positionIsInvalid) {
 			  return false;

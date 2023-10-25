@@ -26,8 +26,8 @@ public class Main {
 		
 		// Set Up Board
 		
-		ArrayList<ArrayList<Boolean>> bombMap = BoardMethods.createBombMap(boardWidth, boardHeight, bombProbability);	
-		ArrayList<ArrayList<Square>> board = BoardMethods.createBoardFromBombMap(bombMap, boardWidth, boardHeight);
+		ArrayList<ArrayList<Boolean>> bombMap = SetUpMethods.createBombMap(boardWidth, boardHeight, bombProbability);	
+		ArrayList<ArrayList<Square>> board = SetUpMethods.createBoardFromBombMap(bombMap, boardWidth, boardHeight);
 		
 		// Start Game
 		
