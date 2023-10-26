@@ -3,10 +3,7 @@ package javaCLIMinesweeper;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class Square {
-	
-	final float bombProbability = 0.1f;
-	
+public class Square {	
 	String content;
 	int xPosition;
 	int yPosition;

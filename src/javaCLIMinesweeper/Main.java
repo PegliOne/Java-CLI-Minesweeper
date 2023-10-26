@@ -16,20 +16,18 @@ public class Main {
 		
 		// Get Board Dimensions from User Input
 		
-		// TODO: Take in input from a configuration.json file using the the JSON simple library instead
 		
 		final int boardWidth = InputProcessingMethods.getBoardDimension("width", scanner);
 		final int boardHeight = InputProcessingMethods.getBoardDimension("height", scanner);
 		final int desiredBombCount = InputProcessingMethods.getBombCount(boardWidth, boardHeight, scanner);
 		
+		// TODO: Take in input from a configuration.json file using the the JSON simple library instead
+		
 		double bombProbability = (float) desiredBombCount / (boardWidth * boardHeight);
 		
-		// Set Up Board
-		
-		ArrayList<ArrayList<Boolean>> bombMap = SetUpMethods.createBombMap(boardWidth, boardHeight, bombProbability);	
-		ArrayList<ArrayList<Square>> board = SetUpMethods.createBoardFromBombMap(bombMap, boardWidth, boardHeight);
-		
-		// Start Game
+		// Set Up and Start Game
+			
+		Board board = new Board(boardWidth, boardHeight, bombProbability);
 		
 		PrintTextMethods.printAppIntro();
 		
@@ -41,7 +39,7 @@ public class Main {
 		
 			// Print Board
 			
-			BoardMethods.printBoard(board, boardWidth, boardHeight);
+			board.printBoard();
 			
 			// Get User Input and Convert to Integers
 			
@@ -73,7 +71,7 @@ public class Main {
 			  continue;
 			}
 
-			Square selectedSquare = board.get(yCoord).get(xCoord);
+			Square selectedSquare = board.squares.get(yCoord).get(xCoord);
 			
 			// Reveal Squares and Check for Bombs
 
@@ -81,8 +79,8 @@ public class Main {
 			
 			if (selectedSquare.hasBomb) {
 				PrintTextMethods.printGameOver();
-				BoardMethods.revealAllBombs(board, boardWidth, boardHeight);
-				BoardMethods.printBoard(board, boardWidth, boardHeight);
+				board.revealAllBombs();
+				board.printBoard();
 				
 				scanner.close();
 				gameRunning = false;
@@ -93,16 +91,16 @@ public class Main {
 				// Square reveal cascade
 				
 				if (Integer.parseInt(selectedSquare.content.trim()) == 0) {
-					SharedMethods.revealAdjacentSquares(selectedSquare, board, boardWidth, boardHeight);
+					board.revealAdjacentSquares(selectedSquare);
 				}
 				
-				int safeHiddenSquaresCount = BoardMethods.getHiddenSafeSquaresCount(board, boardHeight);
+				int safeHiddenSquaresCount = board.getHiddenSafeSquaresCount();
 				
 				if (safeHiddenSquaresCount < 1) {
 					System.out.println("All safe squares revealed. You win!");
 					System.out.println();
-					BoardMethods.revealAllBombs(board, boardWidth, boardHeight);
-					BoardMethods.printBoard(board, boardWidth, boardHeight);
+					board.revealAllBombs();
+					board.printBoard();
 					gameRunning = false;
 				}
 			}
