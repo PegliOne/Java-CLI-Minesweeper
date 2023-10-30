@@ -11,7 +11,7 @@ public class InputProcessingMethods {
 		int dimension = 0;
 		
 		while (dimension < 1) {
-			System.out.print(String.format("Enter board %s (from 1 - 28): ", name));
+			System.out.print(String.format("Enter board %s (between 1 and 28): ", name));
 			
 			String input = scanner.nextLine().replaceAll(" ", "");
 			
@@ -49,7 +49,7 @@ public class InputProcessingMethods {
 		int maxCount = height * width - 1;
 		
 		while (count < 1 || count > maxCount) {
-			System.out.print("Enter (approximate) number of bombs: ");
+			System.out.print(String.format("Enter number of bombs (between 1 and %s): ", maxCount));
 
 			String input = scanner.nextLine().trim();
 			

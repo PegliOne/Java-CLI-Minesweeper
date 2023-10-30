@@ -4,7 +4,7 @@ A minesweeper game made in Java that can be run in the command line.
 
 ## Features
 
-- Board width, height and approximate bomb count selection via user inputs
+- Board width, height and bomb count selection via user inputs
 - Evenly sized squares (including on the left and right edges)
 - Error handling for invalid inputs (including non-numerical inputs and inputs that are too low or two high)
 - Cascades of square reveals for squares with zero bombs surrounding them
@@ -16,9 +16,7 @@ A minesweeper game made in Java that can be run in the command line.
 
 To run the app, open the folder containing it as a project in Eclipse, then press the "run" button.
 
-The app will prompt you to enter a board width (from 1 - 28), then a board height (from 1 - 28), then an approximate bomb count. Spaces added to numerical inputs are ignored.
-
-The actual bomb count will vary since the desired bomb count is used to compute a probability value which then determines the likelihood of a particular square having a bomb. The desired bomb count cannot be greater than the size of the board minus one.
+The app will prompt you to enter a board width (between 1 - 28), then a board height (between 1 - 28), then a bomb count (between 1 and the total number of squares on the board minus 1). Spaces added to numerical inputs are ignored.
 
 If an invalid value is entered for the width, height or bomb count, the app will continue to prompt the user until a valid value is provided.
 

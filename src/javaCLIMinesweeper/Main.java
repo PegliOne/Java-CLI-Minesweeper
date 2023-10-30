@@ -16,18 +16,15 @@ public class Main {
 		
 		// Get Board Dimensions from User Input
 		
+		// TODO: Take in input from a configuration.json file using the the JSON simple library instead
 		
 		final int boardWidth = InputProcessingMethods.getBoardDimension("width", scanner);
 		final int boardHeight = InputProcessingMethods.getBoardDimension("height", scanner);
-		final int desiredBombCount = InputProcessingMethods.getBombCount(boardWidth, boardHeight, scanner);
-		
-		// TODO: Take in input from a configuration.json file using the the JSON simple library instead
-		
-		double bombProbability = (float) desiredBombCount / (boardWidth * boardHeight);
+		final int bombCount = InputProcessingMethods.getBombCount(boardWidth, boardHeight, scanner);
 		
 		// Set Up and Start Game
 			
-		Board board = new Board(boardWidth, boardHeight, bombProbability);
+		Board board = new Board(boardWidth, boardHeight, bombCount);
 		
 		PrintTextMethods.printAppIntro();
 		

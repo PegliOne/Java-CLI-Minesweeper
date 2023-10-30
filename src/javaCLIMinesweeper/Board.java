@@ -8,24 +8,24 @@ public class Board {
 	
 	int width;
 	int height;
-	double bombProbability;
+	int bombCount;
 	ArrayList<ArrayList<Square>> squares;
 	
-	public Board(int width, int height, double bombProbability) {
+	public Board(int width, int height, int bombCount) {
 		this.width = width;
 		this.height = height;
-		this.bombProbability = bombProbability;
+		this.bombCount = bombCount;
 		this.squares = getSquares();
 	}
 	
 	private ArrayList<ArrayList<Square>> getSquares() {
-		ArrayList<ArrayList<Boolean>> bombMap = createBombMap();
+		boolean[][] bombMap = createBombMap();
 		ArrayList<ArrayList<Square>> squares = new ArrayList<ArrayList<Square>>();
 		
 		for(int i = 0; i < this.height; i++) {
 			ArrayList<Square> squaresRow = new ArrayList<Square>();
 			for(int j = 0; j < this.width; j++) {
-			  boolean hasBomb = bombMap.get(i).get(j);	
+			  boolean hasBomb = bombMap[i][j];	
 			  squaresRow.add(new Square(j, i, width, height, bombMap, true, hasBomb));
 			}
 			squares.add(squaresRow);
@@ -34,18 +34,35 @@ public class Board {
 		return squares;
 	}
 	
-	private ArrayList<ArrayList<Boolean>> createBombMap() {
-		ArrayList<ArrayList<Boolean>> bombMap = new ArrayList<ArrayList<Boolean>>();
+	private boolean[][] createBombMap() {
+		boolean[][] bombMap = new boolean[this.height][this.width];
 		
-		for(int i = 0; i < this.height; i++) {
-			ArrayList<Boolean> bombMapRow = new ArrayList<Boolean>();
-			for(int j = 0; j < this.width; j++) {
-			  bombMapRow.add(Math.random() < this.bombProbability);
-			}
-			bombMap.add(bombMapRow);
+		for (int i = 0; i < bombMap.length; i++) {
+			Arrays.fill(bombMap[i], false);
 		}
 		
+		addBombs(bombMap);
+		
 		return bombMap;
+	}
+	
+	private void addBombs(boolean[][] bombMap) {
+		ArrayList<int[]> bombPositions = new ArrayList<int[]>();
+		
+		while (bombPositions.size() < this.bombCount) {
+			int x = (int) Math.floor(Math.random() * this.width);
+			int y = (int) Math.floor(Math.random() * this.height);
+			int[] newBombPosition = { x, y };
+			
+			boolean bombAlreadyExists = bombPositions.stream().anyMatch((bombPosition) -> bombPosition[0] == x && bombPosition[1] == y);
+			
+			if (bombAlreadyExists) {
+				continue;
+			}
+			
+			bombMap[x][y] = true;
+			bombPositions.add(newBombPosition);
+		}
 	}
 	
 	protected void revealAdjacentSquares(Square selectedSquare) {

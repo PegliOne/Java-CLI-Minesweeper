@@ -9,11 +9,11 @@ public class Square {
 	int yPosition;
 	int boardWidth;
 	int boardHeight;
-	ArrayList<ArrayList<Boolean>> bombMap;
+	boolean[][] bombMap;
 	boolean isHidden;
 	boolean hasBomb;
 	
-	public Square(int xPosition, int yPosition, int boardWidth, int boardHeight, ArrayList<ArrayList<Boolean>> bombMap, boolean isHidden, boolean hasBomb) {
+	public Square(int xPosition, int yPosition, int boardWidth, int boardHeight, boolean[][] bombMap, boolean isHidden, boolean hasBomb) {
 		this.xPosition = xPosition;
 		this.yPosition = yPosition;
 		this.boardWidth = boardWidth;
@@ -81,7 +81,7 @@ public class Square {
 			  return false;
 			};
 			
-			return this.bombMap.get(position[1]).get(position[0]);
+			return this.bombMap[yPos][xPos];
 		}).collect(Collectors.toCollection(ArrayList::new));
 		
 		return bombPositions.size();
