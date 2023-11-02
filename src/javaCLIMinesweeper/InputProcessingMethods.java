@@ -5,38 +5,28 @@ import java.util.Scanner;
 
 public class InputProcessingMethods {
 	
-	// TODO: Refactor functions to further reduce repetition
-	
 	public static int getBoardDimension(String name, Scanner scanner) {
 		int dimension = 0;
 		
-		while (dimension < 1) {
+		while (dimension < 1 || dimension > 28) {
 			System.out.print(String.format("Enter board %s (between 1 and 28): ", name));
 			
 			String input = scanner.nextLine().replaceAll(" ", "");
-			
+
 			if (input.matches("-[0-9]*")) {
-				System.out.println();
-				System.out.println(String.format("Error: The %s cannot be negative", name));
-				System.out.println();
+				PrintTextMethods.printSingleLineMessage(String.format("Error: The %s cannot be negative", name));
 				continue;
 			}
-			
+
 			try {
 				dimension = Integer.parseInt(input);
 			} catch (NumberFormatException nfe) {
-				System.out.println();
-				System.out.println(String.format("Error: The %s must be a number", name));
-				System.out.println();
+				PrintTextMethods.printSingleLineMessage(String.format("Error: The %s must be a number", name));
 				continue;
 			}
 						
-			// Check for valid numerical input
-			
 			if (dimension < 1 || dimension > 28) {
-				System.out.println();
-				System.out.println(String.format("Error: The %s must be be 1 - 28", name));
-				System.out.println();
+				PrintTextMethods.printSingleLineMessage(String.format("Error: The %s must be be 1 - 28", name));
 			}
 		}
 		
@@ -54,38 +44,28 @@ public class InputProcessingMethods {
 			String input = scanner.nextLine().trim();
 			
 			if (input.matches(".*-[0-9].*")) {
-				System.out.println();
-				System.out.println(String.format("Error: The bomb count cannot be negative"));
-				System.out.println();
+				PrintTextMethods.printSingleLineMessage("Error: The bomb count cannot be negative");
 				continue;
 			}
 			
 			try {
 				count = Integer.parseInt(input);
 			} catch (NumberFormatException nfe) {
-				System.out.println();
-				System.out.println(String.format("Error: The bomb count must be a number"));
-				System.out.println();
+				PrintTextMethods.printSingleLineMessage("Error: The bomb count must be a number");
 				continue;
 			}
 						
-			// Check for valid numerical input
-			
 			if (count < 1) {
-				System.out.println();
-				System.out.println("Error: Bomb count cannot be zero. At least one bomb must be placed");
-				System.out.println();
+				PrintTextMethods.printSingleLineMessage("Error: Bomb count cannot be zero. At least one bomb must be placed");
 				continue;
 			}
 			
 			if (count > maxCount) {
-				System.out.println();
-				System.out.print("Error: Bomb count is equal to or above total number of board squares. At least one square must be safe.");
-				System.out.println();
+				PrintTextMethods.printSingleLineMessage("Error: Bomb count cannot be equal to or greater than the total number of board squares. At least one square must be safe.");
 			}
-			
-			System.out.println();
 		}
+		
+		System.out.println();
 		return count;
 	}
 	
@@ -94,28 +74,24 @@ public class InputProcessingMethods {
 		
 		String coordinateStr = scanner.nextLine();
 		
-		System.out.println();
-		
 		return coordinateStr.split(" ");
 	}
 	
-	public static ArrayList<Integer> getCoordinateNums(String[] coordStr) {
+	public static ArrayList<Integer> getCoordinateNums(String[] coordInputs) {
 		ArrayList<Integer> coordNums = new ArrayList<Integer>();
 		
-		// TODO: Use a loop for this
-		
-		try {
-			coordNums.add(Integer.parseInt(coordStr[0].trim()));
-		} catch (NumberFormatException nfe) {
-			System.out.println("Error: The x coordinate must be a number");
-		}
-		
-		try {
-			coordNums.add(Integer.parseInt(coordStr[1].trim()));
-		} catch (NumberFormatException nfe) {
-			System.out.println("Error: The y coordiante must be a number");
-		}
+		addInputToCoordinatesArray("x", coordInputs[0], coordNums);
+		addInputToCoordinatesArray("y", coordInputs[1], coordNums);
 		
 		return coordNums;  
+	}
+	
+	private static void addInputToCoordinatesArray(String coordName, String coordInput, ArrayList<Integer> coordNums) {
+		try {
+			coordNums.add(Integer.parseInt(coordInput.trim()));
+		} catch (NumberFormatException nfe) {
+			System.out.println();
+			System.out.println(String.format("Error: The %s coordinate must be a number", coordName));
+		}
 	}
 }

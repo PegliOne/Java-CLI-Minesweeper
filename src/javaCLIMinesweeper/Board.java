@@ -60,7 +60,7 @@ public class Board {
 				continue;
 			}
 			
-			bombMap[x][y] = true;
+			bombMap[y][x] = true;
 			bombPositions.add(newBombPosition);
 		}
 	}

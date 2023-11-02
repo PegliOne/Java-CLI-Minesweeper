@@ -36,11 +36,15 @@ public class Main {
 		
 			// Print Board
 			
+			// TODO: Stop board from reprinting for invalid data
+			
 			board.printBoard();
 			
 			// Get User Input and Convert to Integers
 			
 			String[] coordinates = InputProcessingMethods.getSelectedCoords(scanner);
+			
+			System.out.println();
 			
 			if (coordinates.length < 2) {
 				System.out.println("Error: You have entered less than two coordinates. Remember to include a space between each coordinate.");
