@@ -15,4 +15,10 @@ public class PrintTextMethods {
 		System.out.println("Game Over");
 		System.out.println();
 	}
+	
+	public static void printSingleLineMessage(String message) {
+		System.out.println();
+		System.out.println(message);
+		System.out.println();
+	}
 }
