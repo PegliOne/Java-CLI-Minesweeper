@@ -74,6 +74,8 @@ public class InputProcessingMethods {
 		
 		String coordinateStr = scanner.nextLine();
 		
+		System.out.println();
+		
 		return coordinateStr.split(" ");
 	}
 	
@@ -90,7 +92,6 @@ public class InputProcessingMethods {
 		try {
 			coordNums.add(Integer.parseInt(coordInput.trim()));
 		} catch (NumberFormatException nfe) {
-			System.out.println();
 			System.out.println(String.format("Error: The %s coordinate must be a number", coordName));
 		}
 	}
