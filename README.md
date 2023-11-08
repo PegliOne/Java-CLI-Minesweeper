@@ -24,15 +24,16 @@ If an invalid value is entered for the width, height or bomb count, the app will
 
 To select a coordinate enter an x value, followed by a space and then a y value (i.e. x y). The origin is the top left of the board, so increasing the x value of your selection selects a square futher to the right, while increasing its y value selects a square futher down.
 
-If a selected square doesn't have a bomb, the app with print "No bomb there". The board will then reprint with the selected square's value showing. The value corresponds to the number of bombs surrounding the square. If it is zero, the surrounding squares will be revealed and a cascasde will be triggered (i.e. other squares revealed to have a value of zero will have their surrounding squares revealed and so on until the cascade ends).
+An updated version of the version reprints after each valid square selection. If invalid coordinates are entered (e.g. non-numerical values or values outside of the board's dimensions), an error message will appear and the board will not be reprinted.
+
+If a selected square doesn't have a bomb, the app with print "No bomb there" in addition to reprinting the board. The reprinted board will reveal the selected square's value, which corresponds to the number of bombs surrounding the revealed square. If it is zero, the surrounding squares will also be revealed and a cascasde will be triggered (i.e. other squares revealed to have a value of zero will have their surrounding squares revealed and so on until the cascade ends).
 
 If the selected square does have a bomb, the game will end and the app will print "Boom! Game Over" followed by a reprint of the board with all the bomb squares revealed.
 
-When all the safe squares have been revealed, the game will end and the app will print "All safe squares revealed. You win!" followed by a reprint of the board with all the bomb squares revealed.
+When all the safe squares have been revealed, the game will end and the app will print "All safe squares revealed. You win!" in addition to reprinting the board.
 
 ## Upcoming Improvements
 
-- Preventing the board from reprinting after an invalid square selection
 - Enabling the width, height and bomb count to be set using a configuration.json file
 
 ## Technologies Used
