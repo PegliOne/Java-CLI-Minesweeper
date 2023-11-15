@@ -23,17 +23,12 @@ public class Game {
 		PrintTextMethods.printAppIntro();
 		
 		this.gameRunning = true;
+		
+		this.board.printBoard();
 	}
 	
 	public void runGame() {
-		while (this.gameRunning) {
-			
-			// Print Board
-			
-			// TODO: Stop board from reprinting for invalid data
-			
-			this.board.printBoard();
-			
+		while (this.gameRunning) {	
 			// Get User Input and Convert to Integers
 			
 			String[] coordinates = InputProcessingMethods.getSelectedCoords(this.scanner);
@@ -78,7 +73,7 @@ public class Game {
 				this.scanner.close();
 				this.gameRunning = false;
 			} else {
-				System.out.println("No bomb there");	
+				System.out.println("No bomb there");
 				System.out.println();
 				
 				// Square reveal cascade
@@ -95,7 +90,10 @@ public class Game {
 					this.board.revealAllBombs();
 					this.board.printBoard();
 					this.gameRunning = false;
+					continue;
 				}
+				
+				this.board.printBoard();
 			}
 		}		
 	}
